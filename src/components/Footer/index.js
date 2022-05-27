@@ -38,6 +38,10 @@ export default function Footer(){
 const FooterContainer = styled.footer`
     height: 12vh;
     background-color: #FFFFFF;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
 
     p{
         font-family: 'Lexend Deca', sans-serif;

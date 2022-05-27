@@ -47,9 +47,17 @@ export default function Habitos() {
                     }}> + </button>
                 </RowContainer>
                 {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit}/> : <></>}
-                {habitsArray.length === 0 ? <InitialMessage/> : <></> /*Fazer um map com o array e habits aqui */}
-                
-                {/*<Habito />*/}
+                {habitsArray.length === 0 ? 
+                    <InitialMessage/> 
+                    : 
+                    habitsArray.map((element) => {
+                        return(
+                            <>
+                                <Habito name={element.name}/>
+                            </>
+                        )
+                    })
+                }
             </Main>
             <Footer></Footer>
         </>
@@ -113,7 +121,7 @@ function Habito(props) {
                             <TextContainer1>
                                 <TextContainer2>
                                     <TextContainer3>
-                                        <h1>Ler 1 capítulo de livro</h1>
+                                        <h1>{props.name}</h1>
                                     </TextContainer3>
                                 </TextContainer2>
                             </TextContainer1>
@@ -143,7 +151,6 @@ function Habito(props) {
 
 const Main = styled.main`
     background-color: #E5E5E5;
-    height: 76vh;
 
 `
 const RowContainer = styled.div`
