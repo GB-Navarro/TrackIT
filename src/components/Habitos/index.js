@@ -11,11 +11,42 @@ import ImageContext from "../../contexts/ImageContext";
 
 export default function Habitos() {
 
-    const [screenStage, setScreenStage] = useState(1);
     const [createHabit, setCreateHabit] = useState(false);
+    const [habit, setHabit] = useState({
+        name: "",
+        days: [] /*Falta adicionar esses days ao enviar o post para o server */
+    })
     const [habitsArray, setHabitsArray] = useState([])
 
     const { token } = useContext(UserContext);
+
+    //RETURN POINT --------------------------------
+
+    const [days, setDays] = useState([
+        {
+            selected: false
+        },
+        {
+            selected: false
+        },
+        {
+            selected: false
+        },
+        {
+            selected: false
+        },
+        {
+            selected: false
+        },
+        {
+            selected: false
+        },
+        {
+            selected: false
+        }
+    ])
+
+
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -23,22 +54,24 @@ export default function Habitos() {
     }
 
     const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-    
-    const getHabitsPromisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
 
+    
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     useEffect(() => {
-        getHabitsPromisse.then((response) => {
+        const promisse = axios.get(URL, config)
+
+        promisse.then((response) => {
             setHabitsArray(response.data);
         })
-        getHabitsPromisse.catch((error) => {
+        promisse.catch((error) => {
             console.log(error)
         })
     }, []);
-
+    /*Entender melhor o useEffect, onde deve ser usado e pq quando eu uso ele no onclick da erro*/
     return (
         <>
             <Header></Header>
-            <Main>
+            <Main size={habitsArray}>
                 <RowContainer>
                     <h1>Meus hábitos</h1>
                     <button onClick={() => {
@@ -46,14 +79,14 @@ export default function Habitos() {
                         console.log(habitsArray);
                     }}> + </button>
                 </RowContainer>
-                {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit}/> : <></>}
-                {habitsArray.length === 0 ? 
-                    <InitialMessage/> 
-                    : 
+                {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit} token={token} config={config} /> : <></>}
+                {habitsArray.length === 0 ?
+                    <InitialMessage />
+                    :
                     habitsArray.map((element) => {
-                        return(
+                        return (
                             <>
-                                <Habito name={element.name}/>
+                                <Habito name={element.name} />
                             </>
                         )
                     })
@@ -66,92 +99,103 @@ export default function Habitos() {
 function InitialMessage() {
     return (
         <>
-            <Main>
-                <Text>
-                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-                </Text>
-            </Main>
+            <Text>
+                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+            </Text>
+
         </>
     )
 }
 function CreateHabit(props) {
+
+
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
     return (
         <>
-            <Main>
-                <SectionContainer>
-                    <Section>
-                        <ColumnContainer>
-                            <InputContainer>
-                                <input placeholder="nome do hábito"></input>
-                            </InputContainer>
-                            <BoxContainer1>
-                                <BoxContainer2>
-                                    <BoxContainer3>
-                                        <Box> D </Box>
-                                        <Box> S </Box>
-                                        <Box> T </Box>
-                                        <Box> Q </Box>
-                                        <Box> Q </Box>
-                                        <Box> S </Box>
-                                        <Box> S </Box>
-                                    </BoxContainer3>
-                                </BoxContainer2>
-                            </BoxContainer1>
-                        </ColumnContainer>
-                        <ButtonContainer>
-                            <button> Cancelar </button>
-                            <button onClick={() => {
-                                props.setCreateHabit(false);
-                            }}> Salvar </button>
-                        </ButtonContainer>
-                    </Section>
-                </SectionContainer>
-            </Main>
+            <SectionContainer>
+                <Section>
+                    <ColumnContainer>
+                        <InputContainer>
+                            <input placeholder="nome do hábito" onChange={(e) => {
+                                props.setHabit({
+                                    ...props.habit,
+                                    name: e.target.value
+                                })
+                            }}></input>
+                        </InputContainer>
+                        <BoxContainer1>
+                            <BoxContainer2>
+                                <BoxContainer3>
+                                    <Box> D </Box>
+                                    <Box> S </Box>
+                                    <Box> T </Box>
+                                    <Box> Q </Box>
+                                    <Box> Q </Box>
+                                    <Box> S </Box>
+                                    <Box> S </Box>
+                                </BoxContainer3>
+                            </BoxContainer2>
+                        </BoxContainer1>
+                    </ColumnContainer>
+                    <ButtonContainer>
+                        <button> Cancelar </button>
+                        <button onClick={() => {
+                            props.setCreateHabit(false);
+                            const promisse = axios.post(URL, props.habit, props.config);
+                            promisse.then((response) => {
+                                console.log(response);
+                            })
+                            promisse.catch((error) => {
+                                console.log(error);
+                            })
+                        }}> Salvar </button>
+                    </ButtonContainer>
+                </Section>
+            </SectionContainer>
         </>
     )
 }
 
 function Habito(props) {
     return (
-        <Main>
-            <HabitsSectionContainer>
-                <HabitsSection>
-                    <Habit>
-                        <HabitContainer>
-                            <TextContainer1>
-                                <TextContainer2>
-                                    <TextContainer3>
-                                        <h1>{props.name}</h1>
-                                    </TextContainer3>
-                                </TextContainer2>
-                            </TextContainer1>
-                            <BoxContainer1>
-                                <BoxContainer2>
-                                    <BoxContainer3>
-                                        <Box> D </Box>
-                                        <Box> S </Box>
-                                        <Box> T </Box>
-                                        <Box> Q </Box>
-                                        <Box> Q </Box>
-                                        <Box> S </Box>
-                                        <Box> S </Box>
-                                    </BoxContainer3>
-                                </BoxContainer2>
-                            </BoxContainer1>
-                        </HabitContainer>
-                        <aside>
-                            <ion-icon name="trash-outline"></ion-icon>
-                        </aside>
-                    </Habit>
-                </HabitsSection>
-            </HabitsSectionContainer>
-        </Main>
+        <HabitsSectionContainer>
+            <HabitsSection>
+                <Habit>
+                    <HabitContainer>
+                        <TextContainer1>
+                            <TextContainer2>
+                                <TextContainer3>
+                                    <h1>{props.name}</h1>
+                                </TextContainer3>
+                            </TextContainer2>
+                        </TextContainer1>
+                        <BoxContainer1>
+                            <BoxContainer2>
+                                <BoxContainer3>
+                                    <Box> D </Box>
+                                    <Box> S </Box>
+                                    <Box> T </Box>
+                                    <Box> Q </Box>
+                                    <Box> Q </Box>
+                                    <Box> S </Box>
+                                    <Box> S </Box>
+                                </BoxContainer3>
+                            </BoxContainer2>
+                        </BoxContainer1>
+                    </HabitContainer>
+                    <aside>
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </aside>
+                </Habit>
+            </HabitsSection>
+        </HabitsSectionContainer>
     )
 }
 
 const Main = styled.main`
+    height: ${props => props.size.length === 0 ? '100vh' : '100%'}; /*Ajustar esse bug */
     background-color: #E5E5E5;
-
 `
 const RowContainer = styled.div`
     display:flex;

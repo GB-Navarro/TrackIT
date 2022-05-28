@@ -37,4 +37,3 @@ const RowContainer = styled.div`
     justify-content: space-between;
     align-items: center;
 `
-{/*Aling items não funciona (L-34)*/}

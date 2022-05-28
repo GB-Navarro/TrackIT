@@ -12,8 +12,8 @@ export default function TelaInicial(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState ("");
 
-    const {token, setToken} = useContext(UserContext);
-    const {image, setImage} = useContext(ImageContext);
+    const {setToken} = useContext(UserContext);
+    const {setImage} = useContext(ImageContext);
     
     const navigate = useNavigate();
 

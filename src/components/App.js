@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Testes from "./../components/Testes";
 import TelaInicial from "./../components/TelaInicial";
 import Cadastro from "./../components/Cadastro";
 import Habitos from "./../components/Habitos";
@@ -21,13 +20,11 @@ export default function App(){
                 <ImageContext.Provider value={{image, setImage}}>
                     <BrowserRouter>
                         <Routes>
-                            <Route path="/testes" element={<Testes />}></Route>
                             <Route path="/" element={<TelaInicial/>}></Route>
                             <Route path="/cadastro" element={<Cadastro/>}></Route>
                             <Route path="/habitos" element={<Habitos />}></Route>
                             <Route path="/historico" element={<Historico />}></Route>
                             <Route path="/hoje" element={<Hoje />}></Route>
-                            <Route path="/testes" element={<Testes />}></Route>
                         </Routes>
                     </BrowserRouter> 
                 </ImageContext.Provider>

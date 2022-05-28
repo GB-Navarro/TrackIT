@@ -62,5 +62,3 @@ const CircularProgressBarBox = styled.div`
     height: 91px;
     position:absolute;
 `
-
-{/*Porque o aling items não funciona aqui ? */}
