@@ -6,6 +6,8 @@ import UserContext from "./../../contexts/UserContext"
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 
+import PercentageContext from "./../../contexts/PercentageContext";
+
 import validateWeekday from "./functions/validateWeekday";
 import formulateDate from "./functions/formulateDate";
 import axios from "axios";
@@ -18,23 +20,21 @@ export default function Hoje() {
     dayjs.extend(weekday);
 
     const { token } = useContext(UserContext);
+    const { percentage, setPercentage } = useContext(PercentageContext);
 
     const [habits, setHabits] = useState([])
 
     const config = {
         headers: {
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     }
-    // Return point !!
 
     useEffect(() => {
         const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
 
         promisse.then((response) => {
             setHabits(response.data)
-            console.log(response);
-            console.log(habits)
         })
         promisse.catch((error) => {
             console.log(error);
@@ -50,7 +50,8 @@ export default function Hoje() {
                 <TextsContainer>
                     <TextsBox>
                         <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}</h1>
-                        <h2>Nenhum hábito concluido ainda</h2>
+                        {percentage === 0 ? <h2>Nenhum hábito concluido ainda</h2> : <h2>{percentage}% dos hábitos concluídos</h2>}
+                        
                     </TextsBox>
                 </TextsContainer>
                 {habits.map((habit) => {
@@ -62,10 +63,19 @@ export default function Hoje() {
                                         <h1>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
-
                                     </HabitBox>
                                     <IconBox>
-                                        <ion-icon name="checkbox"></ion-icon>
+                                        <ion-icon name="checkbox" onClick={() => {
+                                            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`
+                                            const checkPromisse = axios.post(URL,{},config);
+                                            checkPromisse.then((response) => {
+                                                //if(response.status === '204')
+                                                console.log(typeof(response.status));
+                                            })
+                                            checkPromisse.catch((error) => {
+                                                console.log(error);
+                                            })
+                                        }}></ion-icon>
                                     </IconBox>
                                 </Habit>
                             </HabitsSection>
