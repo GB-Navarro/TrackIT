@@ -3,6 +3,7 @@ import Footer from "./../Footer";
 import styled from "styled-components";
 
 import UserContext from "./../../contexts/UserContext"
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 
 import validateWeekday from "./functions/validateWeekday";
@@ -10,7 +11,7 @@ import formulateDate from "./functions/formulateDate";
 import axios from "axios";
 
 
-export default function Hoje(){
+export default function Hoje() {
 
     let dayjs = require('dayjs');
     let weekday = require('dayjs/plugin/weekday');
@@ -18,36 +19,53 @@ export default function Hoje(){
 
     const { token } = useContext(UserContext);
 
+    const [habits, setHabits] = useState([])
+
     const config = {
         headers: {
             "Authorization": `Bearer ${token}`
         }
     }
-    const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",config);
+    
+    const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
 
-    return(
-        <>  
+    promisse.then((response) => {
+        console.log(response);
+    })
+    promisse.catch((error) => {
+        console.log(error);
+    })
+
+
+    return (
+        <>
             <Header></Header>
-                <Main>
-                    <TextsContainer>
-                        <TextsBox>
-                            <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(),dayjs().month(),dayjs().year())}</h1>
-                            <h2>Nenhum hábito concluido ainda</h2>
-                        </TextsBox>
-                    </TextsContainer>
-                    <HabitsSection>
-                        <Habit>
-                            <HabitBox>
-                                <h1>Ler 1 capítulo de livro</h1>
-                                <h3>Sequência atual: 3 dias</h3>
-                                <h3>Seu recorde: 3 dias</h3>
-                            </HabitBox>
-                            <IconBox>
-                                <ion-icon name="checkbox"></ion-icon>
-                            </IconBox>
-                        </Habit>
-                    </HabitsSection>
-                </Main>
+            <Main>
+                <TextsContainer>
+                    <TextsBox>
+                        <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}</h1>
+                        <h2>Nenhum hábito concluido ainda</h2>
+                    </TextsBox>
+                </TextsContainer>
+                <HabitsSection>
+                    <Habit>
+                        <HabitBox>
+                            {habits.map((habit) => {
+                                return(
+                                    <>
+                                        <h1>{habit.name}</h1>
+                                        <h3>{habit.currentSequence}</h3>
+                                        <h3>{habit.highestSequence}</h3>
+                                    </>
+                                )
+                            })}
+                        </HabitBox>
+                        <IconBox>
+                            <ion-icon name="checkbox"></ion-icon>
+                        </IconBox>
+                    </Habit>
+                </HabitsSection>
+            </Main>
             <Footer></Footer>
         </>
     );
@@ -77,7 +95,7 @@ const TextsBox = styled.div`
         margin-bottom:5px;
     }
 `
-const HabitsSection =styled.section`
+const HabitsSection = styled.section`
     display:flex;
     justify-content: center;
 `

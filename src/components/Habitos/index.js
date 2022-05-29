@@ -12,6 +12,8 @@ import UserContext from "./../../contexts/UserContext";
 export default function Habitos() {
 
     const [createHabit, setCreateHabit] = useState(false);
+    const [weekdaysArray, setWeekdaysArray] = useState([])
+
     const [habit, setHabit] = useState({
         name: "",
         days: [] /*Falta adicionar esses days ao enviar o post para o server */
@@ -20,40 +22,7 @@ export default function Habitos() {
 
     const { token } = useContext(UserContext);
 
-    //RETURN POINT --------------------------------
-
-    const [days, setDays] = useState([
-        {   
-            name: 'Dom',
-            selected: false
-        },
-        {
-            name: 'Seg',
-            selected: false
-        },
-        {
-            name: 'Ter',
-            selected: false
-        },
-        {
-            name: 'Qua',
-            selected: false
-        },
-        {
-            name: 'Qui',
-            selected: false
-        },
-        {
-            name: 'Sex',
-            selected: false
-        },
-        {
-            name: 'Sab',
-            selected: false
-        }
-    ])
-
-
+    
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -80,20 +49,28 @@ export default function Habitos() {
             <Header></Header>
             <Main size={habitsArray}>
                 <RowContainer>
-                    <h1>Meus hábitos</h1>
+                    <h1 onClick={() => {
+                        console.log(habit.days);
+                        console.log(weekdaysArray);
+                    }}>Meus hábitos</h1>
                     <button onClick={() => {
                         setCreateHabit(true);
-                        console.log(habitsArray);
                     }}> + </button>
                 </RowContainer>
-                {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit} token={token} config={config} days={days} setDays={setDays} weekdays={weekdays}/> : <></>}
+                {createHabit === true ?
+                    <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit}
+                        token={token} config={config} weekdaysArray={weekdaysArray}
+                        setWeekdaysArray={setWeekdaysArray} weekdays={weekdays} />
+                    :
+                    <></>
+                }
                 {habitsArray.length === 0 ?
                     <InitialMessage />
                     :
                     habitsArray.map((element) => {
                         return (
                             <>
-                                <Habito name={element.name} weekdays={weekdays}/>
+                                <Habito name={element.name} weekdays={weekdays} id={element.id} config={config}/>
                             </>
                         )
                     })
@@ -133,10 +110,16 @@ function CreateHabit(props) {
                         <BoxContainer1>
                             <BoxContainer2>
                                 <BoxContainer3>
-                                    {props.weekdays.map((weekday,index) => {
+                                    {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                {setWeekdays(weekday)}
+                                                <span onClick={() => {
+                                                    modifyArray(props.weekdaysArray, weekday, props.setWeekdaysArray);
+                                                    props.setHabit({
+                                                        ...props.habit,
+                                                        days: props.weekdaysArray
+                                                    })
+                                                }}>{setWeekdays(weekday)}</span>
                                             </>
                                         )
                                     })}
@@ -148,6 +131,10 @@ function CreateHabit(props) {
                         <button> Cancelar </button>
                         <button onClick={() => {
                             props.setCreateHabit(false);
+                            props.setHabit({
+                                ...props.habit,
+                                days: props.weekdaysArray
+                            })
                             const promisse = axios.post(URL, props.habit, props.config);
                             promisse.then((response) => {
                                 console.log(response);
@@ -157,7 +144,7 @@ function CreateHabit(props) {
                             })
                         }}> Salvar </button>
                     </ButtonContainer>
-                </Section>
+                </Section> {/*criar um conversor de dias da semana para números*/}
             </SectionContainer>
         </>
     )
@@ -183,7 +170,7 @@ function Habito(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                {setWeekdays(weekday)}
+                                                <span>{setWeekdays(weekday)}</span>
                                             </>
                                         )
                                     })}
@@ -192,7 +179,11 @@ function Habito(props) {
                         </BoxContainer1>
                     </HabitContainer>
                     <aside>
-                        <ion-icon name="trash-outline"></ion-icon>
+                        <ion-icon name="trash-outline" onClick ={() => {
+                            if(window.confirm("Voce realmente quer deletar esse hábito ?")){
+                                deleteHabit(props.id, props.config);
+                            }
+                        }}></ion-icon>
                     </aside>
                 </Habit>
             </HabitsSection>
@@ -200,20 +191,56 @@ function Habito(props) {
     )
 }
 
-function setWeekdays(weekday){
-    if(weekday === 'Dom'){
+function deleteHabit(id,config){
+    URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+    axios.delete(URL,config)
+}
+
+function setWeekdays(weekday) {
+    if (weekday === 'Dom') {
         return <Box>D</Box>
-    }else if(weekday === 'Seg' || weekday == 'Sex' || weekday == 'Sab'){
+    } else if (weekday === 'Seg' || weekday == 'Sex' || weekday == 'Sab') {
         return <Box>S</Box>
-    }else if(weekday === 'Ter'){
+    } else if (weekday === 'Ter') {
         return <Box>T</Box>
-    }else if(weekday === 'Qua' || weekday === 'Qui'){
+    } else if (weekday === 'Qua' || weekday === 'Qui') {
         return <Box>Q</Box>
     }
 }
 
+function modifyArray(array, element, setArray) {
+    element = convertArrayElement(element)
+    if (array.find((s) => s === element) === undefined) {
+        setArray(
+            [...array, element]
+        )
+    } else {
+        setArray(
+            array.filter((e) => e != element)
+        )
+    }
+}
+
+function convertArrayElement(element){
+    if(element === 'Dom'){
+        return 0;
+    }else if(element === 'Seg'){
+        return 1;
+    }else if(element === 'Ter'){
+        return 2;
+    }else if(element === 'Qua'){
+        return 3;
+    }else if(element === 'Qui'){
+        return 4;
+    }else if(element === 'Sex'){
+        return 5;
+    }else if(element === 'Sab'){
+        return 6;
+    }
+}
+
 const Main = styled.main`
-    height: ${props => props.size.length === 0 ? '100vh' : '100%'};
+    height: ${props => props.size.length === 0 ? '100vh' : (props.size.length >= 4 ? '100%' : '100vh')};
     background-color: #e5e5e5;
 `
 const RowContainer = styled.div`
