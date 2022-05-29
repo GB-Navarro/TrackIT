@@ -62,15 +62,17 @@ export default function Hoje() {
                                         <h1>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
+
                                     </HabitBox>
+                                    <IconBox>
+                                        <ion-icon name="checkbox"></ion-icon>
+                                    </IconBox>
                                 </Habit>
                             </HabitsSection>
                         </>
                     )
                 })}
-                <IconBox>
-                    <ion-icon name="checkbox"></ion-icon>
-                </IconBox>
+
             </Main>
             <Footer></Footer>
         </>
