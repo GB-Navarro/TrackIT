@@ -248,7 +248,6 @@ const RowContainer = styled.div`
     justify-content: space-between;
     height: 40px;
     padding-top:22px;
-
     h1{
         font-family: 'Lexend Deca', sans-serif;
         font-size:23px;
@@ -372,7 +371,6 @@ const HabitsSection = styled.section`
     margin-top:50px;
 `
 const Habit = styled.div`
-
     height: 91px;
     margin-top:18px;
     display:flex;
@@ -385,7 +383,6 @@ const Habit = styled.div`
         margin-left:74px;
         font-size:18px
     }
-
 `
 const TextContainer1 = styled.div`
     width:100%;

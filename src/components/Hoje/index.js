@@ -23,7 +23,7 @@ export default function Hoje() {
     const { percentage, setPercentage } = useContext(PercentageContext);
 
     const [habits, setHabits] = useState([])
-
+    const [check, setCheck] = useState([]);
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -51,7 +51,7 @@ export default function Hoje() {
                     <TextsBox>
                         <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}</h1>
                         {percentage === 0 ? <h2>Nenhum hábito concluido ainda</h2> : <h2>{percentage}% dos hábitos concluídos</h2>}
-                        
+
                     </TextsBox>
                 </TextsContainer>
                 {habits.map((habit) => {
@@ -66,15 +66,27 @@ export default function Hoje() {
                                     </HabitBox>
                                     <IconBox>
                                         <ion-icon name="checkbox" onClick={() => {
-                                            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`
-                                            const checkPromisse = axios.post(URL,{},config);
-                                            checkPromisse.then((response) => {
-                                                //if(response.status === '204')
-                                                console.log(typeof(response.status));
-                                            })
-                                            checkPromisse.catch((error) => {
-                                                console.log(error);
-                                            })
+                                            let isInTheArray = check.some((e) => e === habit.id)
+                                            if (isInTheArray === false) {
+                                                const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`;
+                                                const checkPromisse = axios.post(URL, {}, config);
+                                                setCheck(
+                                                    [...check, habit.id]
+                                                )
+                                                checkPromisse.catch((error) => {
+                                                    console.log(error);
+                                                })
+                                            } else {
+                                                const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`;
+                                                const uncheckPromisse = axios.post(URL, {}, config);
+                                                setCheck(
+                                                    check.filter((e) => e != habit.id)
+                                                )
+                                                uncheckPromisse.catch((error) => {
+                                                    console.log(error)
+                                                })
+                                                
+                                            }
                                         }}></ion-icon>
                                     </IconBox>
                                 </Habit>
