@@ -1,11 +1,18 @@
+import { useContext } from "react";
 import styled from "styled-components";
+
+import ImageContext from "../../contexts/ImageContext";
+
 export default function Header(){
+
+    const { image } = useContext(ImageContext);
+
     return(
         <>
             <HEADER>
                 <RowContainer>
                     <p>TrackIt</p>
-                    <img src="https://www.hypeness.com.br/1/2018/03/rick-and-morty-4-1.png" alt="Imagem"/>
+                    <img src={image} alt="Imagem"/>
                 </RowContainer>
             </HEADER>
         </>

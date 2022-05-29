@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import { useContext } from "react";
 import UserContext from "./../../contexts/UserContext";
-import ImageContext from "../../contexts/ImageContext";
+
 
 export default function Habitos() {
 
@@ -23,25 +23,32 @@ export default function Habitos() {
     //RETURN POINT --------------------------------
 
     const [days, setDays] = useState([
-        {
+        {   
+            name: 'Dom',
             selected: false
         },
         {
+            name: 'Seg',
             selected: false
         },
         {
+            name: 'Ter',
             selected: false
         },
         {
+            name: 'Qua',
             selected: false
         },
         {
+            name: 'Qui',
             selected: false
         },
         {
+            name: 'Sex',
             selected: false
         },
         {
+            name: 'Sab',
             selected: false
         }
     ])
@@ -55,7 +62,7 @@ export default function Habitos() {
 
     const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
-    
+
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     useEffect(() => {
         const promisse = axios.get(URL, config)
@@ -79,14 +86,14 @@ export default function Habitos() {
                         console.log(habitsArray);
                     }}> + </button>
                 </RowContainer>
-                {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit} token={token} config={config} /> : <></>}
+                {createHabit === true ? <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit} token={token} config={config} days={days} setDays={setDays} weekdays={weekdays}/> : <></>}
                 {habitsArray.length === 0 ?
                     <InitialMessage />
                     :
                     habitsArray.map((element) => {
                         return (
                             <>
-                                <Habito name={element.name} />
+                                <Habito name={element.name} weekdays={weekdays}/>
                             </>
                         )
                     })
@@ -108,7 +115,6 @@ function InitialMessage() {
 }
 function CreateHabit(props) {
 
-
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
 
     return (
@@ -127,13 +133,13 @@ function CreateHabit(props) {
                         <BoxContainer1>
                             <BoxContainer2>
                                 <BoxContainer3>
-                                    <Box> D </Box>
-                                    <Box> S </Box>
-                                    <Box> T </Box>
-                                    <Box> Q </Box>
-                                    <Box> Q </Box>
-                                    <Box> S </Box>
-                                    <Box> S </Box>
+                                    {props.weekdays.map((weekday,index) => {
+                                        return (
+                                            <>
+                                                {setWeekdays(weekday)}
+                                            </>
+                                        )
+                                    })}
                                 </BoxContainer3>
                             </BoxContainer2>
                         </BoxContainer1>
@@ -158,6 +164,7 @@ function CreateHabit(props) {
 }
 
 function Habito(props) {
+
     return (
         <HabitsSectionContainer>
             <HabitsSection>
@@ -173,13 +180,13 @@ function Habito(props) {
                         <BoxContainer1>
                             <BoxContainer2>
                                 <BoxContainer3>
-                                    <Box> D </Box>
-                                    <Box> S </Box>
-                                    <Box> T </Box>
-                                    <Box> Q </Box>
-                                    <Box> Q </Box>
-                                    <Box> S </Box>
-                                    <Box> S </Box>
+                                    {props.weekdays.map((weekday) => {
+                                        return (
+                                            <>
+                                                {setWeekdays(weekday)}
+                                            </>
+                                        )
+                                    })}
                                 </BoxContainer3>
                             </BoxContainer2>
                         </BoxContainer1>
@@ -193,9 +200,21 @@ function Habito(props) {
     )
 }
 
+function setWeekdays(weekday){
+    if(weekday === 'Dom'){
+        return <Box>D</Box>
+    }else if(weekday === 'Seg' || weekday == 'Sex' || weekday == 'Sab'){
+        return <Box>S</Box>
+    }else if(weekday === 'Ter'){
+        return <Box>T</Box>
+    }else if(weekday === 'Qua' || weekday === 'Qui'){
+        return <Box>Q</Box>
+    }
+}
+
 const Main = styled.main`
-    height: ${props => props.size.length === 0 ? '100vh' : '100%'}; /*Ajustar esse bug */
-    background-color: #E5E5E5;
+    height: ${props => props.size.length === 0 ? '100vh' : '100%'};
+    background-color: #e5e5e5;
 `
 const RowContainer = styled.div`
     display:flex;
