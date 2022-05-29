@@ -74,19 +74,12 @@ export default function Hoje() {
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
-                                                checkPromisse.catch((error) => {
-                                                    console.log(error);
-                                                })
                                             } else {
                                                 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`;
                                                 const uncheckPromisse = axios.post(URL, {}, config);
                                                 setCheck(
                                                     check.filter((e) => e != habit.id)
                                                 )
-                                                uncheckPromisse.catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                
                                             }
                                         }}></ion-icon>
                                     </IconBox>
@@ -163,5 +156,5 @@ const IconBox = styled.div`
     justify-content: center;
     align-items: center;
     margin-right:13px;
-    color: ${props => (props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7"}
+    color: ${props => props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7"}
 `

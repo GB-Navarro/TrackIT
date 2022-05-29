@@ -176,7 +176,7 @@ function Habito(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <span>{setWeekdays(weekday, props.weekdaysArray)}</span>
+                                                <span>{setWeekdays(weekday, props.auxArray)}</span>
                                             </>
                                         )
                                     })}
