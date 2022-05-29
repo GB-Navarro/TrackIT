@@ -26,15 +26,21 @@ export default function Hoje() {
             "Authorization": `Bearer ${token}`
         }
     }
-    
-    const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
+    // Return point !!
 
-    promisse.then((response) => {
-        console.log(response);
-    })
-    promisse.catch((error) => {
-        console.log(error);
-    })
+    useEffect(() => {
+        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
+
+        promisse.then((response) => {
+            setHabits(response.data)
+            console.log(response);
+            console.log(habits)
+        })
+        promisse.catch((error) => {
+            console.log(error);
+        })
+    }, []);
+
 
 
     return (
@@ -47,24 +53,24 @@ export default function Hoje() {
                         <h2>Nenhum hábito concluido ainda</h2>
                     </TextsBox>
                 </TextsContainer>
-                <HabitsSection>
-                    <Habit>
-                        <HabitBox>
-                            {habits.map((habit) => {
-                                return(
-                                    <>
+                {habits.map((habit) => {
+                    return (
+                        <>
+                            <HabitsSection>
+                                <Habit>
+                                    <HabitBox>
                                         <h1>{habit.name}</h1>
-                                        <h3>{habit.currentSequence}</h3>
-                                        <h3>{habit.highestSequence}</h3>
-                                    </>
-                                )
-                            })}
-                        </HabitBox>
-                        <IconBox>
-                            <ion-icon name="checkbox"></ion-icon>
-                        </IconBox>
-                    </Habit>
-                </HabitsSection>
+                                        <h3>Sequência atual: {habit.currentSequence}</h3>
+                                        <h3>Seu recorde: {habit.highestSequence}</h3>
+                                    </HabitBox>
+                                </Habit>
+                            </HabitsSection>
+                        </>
+                    )
+                })}
+                <IconBox>
+                    <ion-icon name="checkbox"></ion-icon>
+                </IconBox>
             </Main>
             <Footer></Footer>
         </>
