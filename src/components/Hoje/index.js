@@ -12,7 +12,6 @@ import validateWeekday from "./functions/validateWeekday";
 import formulateDate from "./functions/formulateDate";
 import axios from "axios";
 
-
 export default function Hoje() {
 
     let dayjs = require('dayjs');
@@ -24,6 +23,8 @@ export default function Hoje() {
 
     const [habits, setHabits] = useState([])
     const [check, setCheck] = useState([]);
+    let [isInTheArray,setIsInTheArray] = useState(undefined);
+
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -42,7 +43,7 @@ export default function Hoje() {
     }, []);
 
 
-
+    //checar o array e comparar com o id porque o isinthearray é um estado de resultado único, logo, ele generaliza as propriedades css
     return (
         <>
             <Header></Header>
@@ -64,9 +65,9 @@ export default function Hoje() {
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
                                     </HabitBox>
-                                    <IconBox>
+                                    <IconBox check={check} id={habit.id}>
                                         <ion-icon name="checkbox" onClick={() => {
-                                            let isInTheArray = check.some((e) => e === habit.id)
+                                            setIsInTheArray(check.some((e) => e === habit.id))
                                             if (isInTheArray === false) {
                                                 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`;
                                                 const checkPromisse = axios.post(URL, {}, config);
@@ -158,9 +159,9 @@ const HabitBox = styled.div`
 `
 const IconBox = styled.div`
     font-size:75px;
-    color: #e7e7e7;
     display:flex;
     justify-content: center;
     align-items: center;
     margin-right:13px;
+    color: ${props => (props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7"}
 `
