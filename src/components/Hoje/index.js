@@ -53,7 +53,6 @@ export default function Hoje() {
                     <TextsBox>
                         <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}</h1>
                         {percentage === 0 ? <h2>Nenhum hábito concluido ainda</h2> : <h2>{percentage}% dos hábitos concluídos</h2>}
-
                     </TextsBox>
                 </TextsContainer>
                 {habits.map((habit) => {
@@ -74,15 +73,15 @@ export default function Hoje() {
                                         <ion-icon name="checkbox" onClick={() => {
                                             setIsInTheArray(check.some((e) => e === habit.id))
                                             if (isInTheArray === false) {
-                                                const checkPromisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
+                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
                                                 {((habits.length > 0) && (check.length > 0)) ? setPercentage((habits.length/check.length)*100) : <></>}
                                             } else {
-                                                const uncheckPromisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
+                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                                 setCheck(
-                                                    check.filter((e) => e != habit.id)
+                                                    check.filter((e) => e !== habit.id)
                                                 )
                                             }
                                         }}></ion-icon>
