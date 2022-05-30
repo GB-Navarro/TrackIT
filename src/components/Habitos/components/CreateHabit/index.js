@@ -70,8 +70,7 @@ export default function CreateHabit(props) {
                     </ColumnContainer>
                     <ButtonContainer>
                         <button onClick={() => {
-                            //props.setCreateHabit(false);
-                            console.log(props.habit);
+                            props.setCreateHabit(false);
                         }}> Cancelar </button>
                         {
                             loading === false ? 

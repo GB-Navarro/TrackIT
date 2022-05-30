@@ -24,7 +24,6 @@ export default function Hoje() {
 
     const { token } = useContext(UserContext);
     const { percentage, setPercentage } = useContext(PercentageContext);
-
     const [habits, setHabits] = useState([]);
     const [check, setCheck] = useState([]);
     const [checkedHabits, setCheckedHabits] = useState(0);
@@ -55,7 +54,10 @@ export default function Hoje() {
             setCheck(getId(response.data.filter((e) => e.done === true)))
             setCheckedHabits((response.data.filter((e) => e.done === true)).length);
             setTotalHabits(response.data.length);
-            setPercentage(Math.floor((checkedHabits/totalHabits)*100));
+            ((checkedHabits != 0) && (totalHabits!= 0)) ? 
+                setPercentage(Math.floor((checkedHabits/totalHabits)*100))
+                :
+                setPercentage(0)
         })
         promisse.catch((error) => {
             console.log(error);
@@ -75,10 +77,13 @@ export default function Hoje() {
                             {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
                         </h1>
                         {
+                            ((checkedHabits != 0) && (totalHabits!= 0)) ? 
                             setPercentage(Math.floor((checkedHabits/totalHabits)*100))
+                            :
+                            setPercentage(0)
                         }
                         {
-                            (percentage === 0 || percentage === isNaN) ? 
+                            (!(percentage >= 0)) ? 
                                 <h2>Nenhum hábito concluido ainda</h2> 
                                 : 
                                 <h2>{percentage}% dos hábitos concluídos</h2>
