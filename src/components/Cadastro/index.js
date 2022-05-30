@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Oval } from 'react-loader-spinner'
 import { Link, useNavigate } from "react-router-dom";
 
+import logo from "./images/logo.jpg";
+
 import { Section, ColumnContainer, LoadingButton } from "./styles";
 
 export default function Cadastro() {
@@ -36,8 +38,7 @@ export default function Cadastro() {
         <>
             <Section>
                 <ColumnContainer>
-                    <img src="./../../assets/images/logo.jpeg" alt="Logo" />
-                    <h1>TrackIt</h1>
+                    <img src={logo} alt="Logo" />
                     {
                         loading === false ?
                             <>

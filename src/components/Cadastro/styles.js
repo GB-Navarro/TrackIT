@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Section = styled.section`
+    margin-top: 18vh;
     background-color: #FFFFFF;
 
     h1{

@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import UserContext from "./../../contexts/UserContext";
 import ImageContext from "../../contexts/ImageContext";
 
+import logo from "./images/logo.jpg"
+
 import { Section, ColumnContainer, LoadingButton } from "./styles";
 
 export default function TelaInicial() {
@@ -43,10 +45,7 @@ export default function TelaInicial() {
         <>
             <Section>
                 <ColumnContainer>
-
-                    <img src="./assets/images/logo.png" alt="Logo" />
-                    <h1>TrackIt</h1>
-
+                    <img src={logo} alt="Logo" />
                     {
                         loading === true ?
                             <>
