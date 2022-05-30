@@ -101,7 +101,6 @@ export default function CreateHabit(props) {
                                     <Oval color="#FFFFFF" height={50} width={35} />
                                 </LoadingButton>
                         }
-                        
                     </ButtonContainer>
                 </Section>
             </SectionContainer>

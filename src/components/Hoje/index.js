@@ -94,15 +94,13 @@ export default function Hoje() {
 
                                             isInTheArray = (check.some((e) => e === habit.id));
                     
-                                            setPercentage((check.length / habits.length) * 100)
-
                                             if (isInTheArray === false) {
                                                 habit.done = true;
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
                                                 checkedHabits = checkedHabits + 1;
-                                                setPercentage((checkedHabits/totalHabits) * 100)
+                                                setPercentage(Math.floor((checkedHabits/totalHabits) * 100))
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                             } else {
                                                 habit.done = false;
@@ -110,7 +108,7 @@ export default function Hoje() {
                                                     check.filter((e) => e !== habit.id)
                                                 )
                                                 checkedHabits = checkedHabits - 1;
-                                                setPercentage((checkedHabits/totalHabits) * 100)
+                                                setPercentage(Math.floor((checkedHabits/totalHabits) * 100))
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                             }
                                         }}></ion-icon>
