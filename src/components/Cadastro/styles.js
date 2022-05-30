@@ -40,3 +40,18 @@ export const ColumnContainer = styled.div`
     flex-direction: column;
     align-items: center;
 `
+
+export const LoadingButton = styled.button`
+        width: 80vw;
+        height: 45px;
+        background-color: #52B6FF;
+        font-weight: 400;
+        font-family: 'Lexend Deca', sans-serif;
+        font-size:21px;
+        color:#FFFFFF;
+        border-radius: 5px;
+        border: 1px solid #D4D4D4;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+`

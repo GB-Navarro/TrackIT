@@ -68,3 +68,17 @@ div{
     background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
 }
 `
+export const LoadingButton = styled.button`
+        width: 84px;
+        height: 35px;
+        background-color: #52B6FF;
+        font-family: 'Lexend Deca', sans-serif;
+        font-size:16px;
+        color: #FFFFFF;
+        border: 1px solid #52B6FF;
+        border-radius: 5px;
+        margin: 0px 20px 15px 0px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+`

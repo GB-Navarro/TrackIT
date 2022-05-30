@@ -54,7 +54,8 @@ export default function Hoje() {
                 <TextsContainer>
                     <TextsBox>
                         <h1>
-                            {validateWeekday(dayjs().weekday())}, 
+                            {validateWeekday(dayjs().weekday())},
+                            <span> </span>  
                             {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
                         </h1>
                         {

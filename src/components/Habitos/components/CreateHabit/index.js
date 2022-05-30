@@ -1,28 +1,45 @@
 import axios from "axios";
+import { useState } from "react";
+import { Oval } from 'react-loader-spinner'
 
 import setWeekdays from "../../functions/setWeekdays";
 import modifyArray from "../../functions/modifyArray";
 
-import {
-SectionContainer, Section, ColumnContainer, InputContainer,
-BoxContainer1, BoxContainer2, BoxContainer3, ButtonContainer,
-CreateHabitElement
+import 
+{
+    SectionContainer, Section, ColumnContainer, InputContainer,
+    BoxContainer1, BoxContainer2, BoxContainer3, ButtonContainer,
+    CreateHabitElement, LoadingButton
 }
-    from "./styles";
+from "./styles";
 
 export default function CreateHabit(props) {
+
+    const [loading, setLoading] = useState(false);
+
     return (
         <>
             <SectionContainer>
                 <Section>
                     <ColumnContainer>
                         <InputContainer>
-                            <input placeholder="nome do hábito" value={props.habit.name} onChange={(e) => {
-                                props.setHabit({
-                                    ...props.habit,
-                                    name: e.target.value
-                                })
-                            }}></input>
+                            {
+                                loading === false ?
+                                    <input placeholder="nome do hábito" value={props.habit.name} onChange={(e) => {
+                                        props.setHabit({
+                                            ...props.habit,
+                                            name: e.target.value
+                                        })
+                                    }}></input>
+                                    :
+                                    <input placeholder="nome do hábito" value={props.habit.name} onChange={(e) => {
+                                        props.setHabit({
+                                            ...props.habit,
+                                            name: e.target.value
+                                        })
+                                    }} disabled></input>
+                            }
+                            
                         </InputContainer>
                         <BoxContainer1>
                             <BoxContainer2>
@@ -53,25 +70,36 @@ export default function CreateHabit(props) {
                         <button onClick={() => {
                             props.setCreateHabit(false);
                         }}> Cancelar </button>
-                        <button onClick={() => {
-                            props.setCreateHabit(false);
-                            props.setHabit({
-                                ...props.habit,
-                                days: props.weekdaysArray
-                            })
-                            const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", props.habit, props.config);
-                            promisse.then(() => {
-                                props.setHabitsArray([...props.habitsArray, props.habit]);
-                            })
-                            promisse.catch((error) => {
-                                console.log(error);
-                            })
-                            props.setAuxArray([]);
-                            props.setHabit({
-                                name: "",
-                                days: []
-                            })
-                        }}> Salvar </button>
+                        {
+                            loading === false ?
+                                <button onClick={() => {
+                                    setLoading(true);
+                                    props.setCreateHabit(false);
+                                    props.setHabit({
+                                        ...props.habit,
+                                        days: props.weekdaysArray
+                                    })
+                                    const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", props.habit, props.config);
+                                    promisse.then(() => {
+                                        setLoading(false);
+                                        props.setHabitsArray([...props.habitsArray, props.habit]);
+                                    })
+                                    promisse.catch(() => {
+                                        alert("Ocorreu um erro, tente novamente");
+                                        setLoading(false);
+                                    })
+                                    props.setAuxArray([]);
+                                    props.setHabit({
+                                        name: "",
+                                        days: []
+                                    })
+                                }}> Salvar </button>
+                                :
+                                <LoadingButton disabled>
+                                    <Oval color="#FFFFFF" height={50} width={35} />
+                                </LoadingButton>
+                        }
+                        
                     </ButtonContainer>
                 </Section>
             </SectionContainer>
