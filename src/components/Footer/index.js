@@ -24,7 +24,7 @@ export default function Footer() {
                                     pathColor: "#FFFFFF",
                                     textColor: "#FFFFFF",
                                     trailColor: "#52B6FF",
-                                    textSize: "16px"
+                                    textSize: "18px"
                                 })}
                             />;
                         </Link>

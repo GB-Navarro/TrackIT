@@ -11,7 +11,7 @@ import UserContext from "./../../contexts/UserContext"
 import validateWeekday from "./functions/validateWeekday";
 import formulateDate from "./functions/formulateDate";
 
-import { Main, TextsContainer, TextsBox, HabitsSection, Habit, HabitBox, IconBox } from "./styles"
+import { Main, TextsContainer, TextsBox, HabitsSection, Habit, HabitBox, IconBox, SpaceComponent } from "./styles"
 
 export default function Hoje() {
 
@@ -61,7 +61,7 @@ export default function Hoje() {
     return (
         <>
             <Header/>
-            <Main>
+            <Main size={habits}>
                 <TextsContainer>
                     <TextsBox>
                         <h1>
@@ -118,6 +118,7 @@ export default function Hoje() {
                         </>
                     )
                 })}
+                <SpaceComponent></SpaceComponent>
             </Main>
             <Footer/>
         </>

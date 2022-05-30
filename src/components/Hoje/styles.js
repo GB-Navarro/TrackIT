@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main = styled.main`
-    height: 76vh;
+    height: ${props => props.size.length === 0 ? '100vh' : (props.size.length >= 4 ? '100%' : '100vh')};
     background-color: #E5E5E5;
     font-family: 'Lexend Deca', sans-serif;
 `
@@ -55,6 +55,12 @@ export const HabitBox = styled.div`
         margin-bottom:5px;
     }
 `
+
+export const SpaceComponent = styled.div`
+    background-color: #e5e5e5;
+    padding-bottom:100px;
+`
+
 export const IconBox = styled.div`
     font-size:75px;
     display:flex;
@@ -62,5 +68,7 @@ export const IconBox = styled.div`
     align-items: center;
     margin-right:13px;
     color: ${props => props.done === true ? "#8FC549" : (props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7")}
-`
+    `
+    
+
 

@@ -31,3 +31,12 @@ export const RowContainer = styled.div`
         margin-right: 18px;
     }
 `
+export const TopSpaceComponent = styled.div`
+    background-color: #e5e5e5;
+    padding-bottom:80px;
+`
+
+export const BottomSpaceComponent = styled.div`
+    background-color: #e5e5e5;
+    padding-bottom:120px;
+`

@@ -22,3 +22,7 @@ export const TextsContainer = styled.div`
 export const TextsBox = styled.div`
     width:90%;
 `
+
+export const SpaceComponent = styled.div`
+    margin-top:80px;
+`

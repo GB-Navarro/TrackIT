@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import UserContext from "./../../contexts/UserContext";
 
-import { Main, RowContainer } from "./styles"
+import { Main, RowContainer, TopSpaceComponent, BottomSpaceComponent } from "./styles"
 
 export default function Habitos() {
 
@@ -48,6 +48,7 @@ export default function Habitos() {
     return (
         <>
             <Header/>
+            <TopSpaceComponent></TopSpaceComponent>
             <Main size={habitsArray}>
                 <RowContainer>
                     <h1>Meus hábitos</h1>
@@ -77,6 +78,7 @@ export default function Habitos() {
                     })
                 }
             </Main>
+            <BottomSpaceComponent></BottomSpaceComponent>
             <Footer/>
         </>
     )
