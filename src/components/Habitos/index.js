@@ -100,7 +100,7 @@ function CreateHabit(props) {
                 <Section>
                     <ColumnContainer>
                         <InputContainer>
-                            <input placeholder="nome do hábito" onChange={(e) => {
+                            <input placeholder="nome do hábito" value={props.habit.name} onChange={(e) => {
                                 props.setHabit({
                                     ...props.habit,
                                     name: e.target.value
@@ -148,6 +148,11 @@ function CreateHabit(props) {
                             })
                             promisse.catch((error) => {
                                 console.log(error);
+                            })
+                            props.setAuxArray([]);
+                            props.setHabit({
+                                name:"",
+                                days: []
                             })
                         }}> Salvar </button>
                     </ButtonContainer>
