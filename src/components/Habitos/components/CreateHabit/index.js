@@ -47,18 +47,19 @@ export default function CreateHabit(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <CreateHabitElement auxArray={props.auxArray} weekday={weekday} onClick={() => {
-                                                    if (props.auxArray.some((e) => e === weekday) === false) {
-                                                        props.setAuxArray([...props.auxArray, weekday]);
-                                                    } else {
-                                                        props.setAuxArray(props.auxArray.filter((e) => e !== weekday));
-                                                    }
-                                                    modifyArray(props.weekdaysArray, weekday, props.setWeekdaysArray);
-                                                    props.setHabit({
-                                                        ...props.habit,
-                                                        days: props.weekdaysArray
-                                                    })
-                                                    {loading === true ? setEnabled(false) : setEnabled(true)}
+                                                <CreateHabitElement auxArray={props.auxArray} weekday={weekday} 
+                                                    onClick={() => {
+                                                        if (props.auxArray.some((e) => e === weekday) === false) {
+                                                            props.setAuxArray([...props.auxArray, weekday]);
+                                                        } else {
+                                                            props.setAuxArray(props.auxArray.filter((e) => e !== weekday));
+                                                        }
+                                                        modifyArray(props.weekdaysArray, weekday, props.setWeekdaysArray);
+                                                        props.setHabit({
+                                                            ...props.habit,
+                                                            days: props.weekdaysArray
+                                                        })
+                                                        {loading === true ? setEnabled(false) : setEnabled(true)}
                                                 }}>{setWeekdays(weekday, enabled)}</CreateHabitElement>
                                             </>
                                         )
@@ -69,7 +70,8 @@ export default function CreateHabit(props) {
                     </ColumnContainer>
                     <ButtonContainer>
                         <button onClick={() => {
-                            props.setCreateHabit(false);
+                            //props.setCreateHabit(false);
+                            console.log(props.habit);
                         }}> Cancelar </button>
                         {
                             loading === false ? 
@@ -84,6 +86,7 @@ export default function CreateHabit(props) {
                                         setLoading(false);
                                         props.setCreateHabit(false);
                                         props.setHabitsArray([...props.habitsArray, props.habit]);
+                                        props.setWeekdaysArray([]);
                                     })
                                     promisse.catch(() => {
                                         alert("Ocorreu um erro, tente novamente");

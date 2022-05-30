@@ -2,7 +2,7 @@ import codifyArray from "./codifyArray";
 
 export default function modifyArray(array, element, setArray) {
     element = codifyArray(element)
-    if (array.find((s) => s === element) === undefined) {
+    if(!(array.some((e) => e === element))) {
         setArray(
             [...array, element]
         )

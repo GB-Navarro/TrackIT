@@ -3,6 +3,7 @@ import Footer from "./../Footer";
 
 import axios from "axios";
 import { useContext } from "react";
+//import { Oval } from 'react-loader-spinner'
 import { useEffect, useState } from "react";
 
 import PercentageContext from "./../../contexts/PercentageContext";
@@ -13,7 +14,7 @@ import formulateDate from "./functions/formulateDate";
 
 import { Main, TextsContainer, TextsBox, HabitsSection, 
     Habit, HabitBox, IconBox, BottomSpaceComponent, 
-    TopSpaceComponent, GreenText } from "./styles"
+    TopSpaceComponent, GreenText, LoadingButton } from "./styles"
 
 export default function Hoje() {
 
@@ -28,10 +29,7 @@ export default function Hoje() {
     const [check, setCheck] = useState([]);
     const [checkedHabits, setCheckedHabits] = useState(0);
     const [totalHabits, setTotalHabits] = useState(0);
-    const [record, setRecord] = useState([{
-        currentSequence: 0,
-        highestSequence: 0
-    }])
+    //const [loading, setLoading] = useState(false);
 
     let isInTheArray = undefined;
 
@@ -80,7 +78,7 @@ export default function Hoje() {
                             setPercentage(Math.floor((checkedHabits/totalHabits)*100))
                         }
                         {
-                            (percentage === 0 || percentage === NaN) ? 
+                            (percentage === 0 || percentage === isNaN) ? 
                                 <h2>Nenhum hábito concluido ainda</h2> 
                                 : 
                                 <h2>{percentage}% dos hábitos concluídos</h2>
@@ -133,7 +131,7 @@ export default function Hoje() {
                                                     habit.currentSequence = habit.currentSequence + 1;
                                                     habit.highestSequence = habit.highestSequence + 1;
                                                 }else{
-                                                    habit.currentSequence = habit.currentSequence + 1;
+                                                    habit.currentSequence = habit.currentSequence + 1;  
                                                 }
                                                 
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);

@@ -69,12 +69,27 @@ export const GreenText = styled.span`
     color: #8FC549;
 `
 
+export const LoadingButton = styled.button`
+        width: 80vw;
+        height: 45px;
+        background-color: #52B6FF;
+        font-weight: 400;
+        font-family: 'Lexend Deca', sans-serif;
+        font-size:21px;
+        color:#FFFFFF;
+        border-radius: 5px;
+        border: 1px solid #D4D4D4;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+`
+
 export const IconBox = styled.div`
     font-size:75px;
     display:flex;
     justify-content: center;
     align-items: center;
     margin-right:13px;
-    color: ${props => props.done === true ? "#8FC549" : (props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7")}
+    color: ${props => props.done === true ? "#8FC549" : (props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7")};
 `
     
