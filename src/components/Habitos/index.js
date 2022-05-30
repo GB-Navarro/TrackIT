@@ -13,7 +13,7 @@ export default function Habitos() {
 
     const [createHabit, setCreateHabit] = useState(false);
     const [weekdaysArray, setWeekdaysArray] = useState([])
-    const [auxArray, setAuxArray] = useState([]);
+    const [createHabitAuxArray, setCreateHabitAuxArray] = useState([]);
     const [habit, setHabit] = useState({
         name: "",
         days: []
@@ -49,9 +49,7 @@ export default function Habitos() {
             <Header></Header>
             <Main size={habitsArray}>
                 <RowContainer>
-                    <h1 onClick={() => {
-                        console.log(auxArray);
-                    }}>Meus hábitos</h1>
+                    <h1>Meus hábitos</h1>
                     <button onClick={() => {
                         setCreateHabit(true);
                     }}> + </button>
@@ -60,7 +58,7 @@ export default function Habitos() {
                     <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit}
                         token={token} config={config} weekdaysArray={weekdaysArray}
                         setWeekdaysArray={setWeekdaysArray} weekdays={weekdays}
-                        auxArray={auxArray} setAuxArray={setAuxArray} />
+                        auxArray={createHabitAuxArray} setAuxArray={setCreateHabitAuxArray} />
                     :
                     <></>
                 }
@@ -71,7 +69,7 @@ export default function Habitos() {
                         return (
                             <>
                                 <Habito name={element.name} weekdays={weekdays} id={element.id}
-                                    config={config} auxArray={auxArray} />
+                                    config={config} habitDays={element.days} />
                             </>
                         )
                     })
@@ -134,7 +132,9 @@ function CreateHabit(props) {
                         </BoxContainer1>
                     </ColumnContainer>
                     <ButtonContainer>
-                        <button> Cancelar </button>
+                        <button onClick={() => {
+                            props.setCreateHabit(false);
+                        }}> Cancelar </button>
                         <button onClick={() => {
                             props.setCreateHabit(false);
                             props.setHabit({
@@ -142,9 +142,6 @@ function CreateHabit(props) {
                                 days: props.weekdaysArray
                             })
                             const promisse = axios.post(URL, props.habit, props.config);
-                            promisse.then((response) => {
-                                console.log(response);
-                            })
                             promisse.catch((error) => {
                                 console.log(error);
                             })
@@ -176,7 +173,7 @@ function Habito(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <span>{setWeekdays(weekday)}</span>
+                                                <HabitElement habitDays={props.habitDays} weekday={weekday}>{setWeekdays(weekday)}</HabitElement>
                                             </>
                                         )
                                     })}
@@ -221,7 +218,7 @@ function setWeekdays(weekday) {
 }
 
 function modifyArray(array, element, setArray) {
-    element = convertArrayElement(element)
+    element = codifyArray(element)
     if (array.find((s) => s === element) === undefined) {
         setArray(
             [...array, element]
@@ -233,7 +230,7 @@ function modifyArray(array, element, setArray) {
     }
 }
 
-function convertArrayElement(element) {
+function codifyArray(element) {
     if (element === 'Dom') {
         return 0;
     } else if (element === 'Seg') {
@@ -248,6 +245,24 @@ function convertArrayElement(element) {
         return 5;
     } else if (element === 'Sab') {
         return 6;
+    }
+}
+
+function decodifyArray(element) {
+    if (element === 0) {
+        return 'Dom';
+    } else if (element === 1) {
+        return 'Seg';
+    } else if (element === 2) {
+        return 'Ter';
+    } else if (element === 3) {
+        return 'Qua';
+    } else if (element === 4) {
+        return 'Qui';
+    } else if (element === 5) {
+        return 'Sex';
+    } else if (element === 6) {
+        return 'Sab';
     }
 }
 
@@ -411,9 +426,16 @@ const TextContainer3 = styled.div`
 const HabitContainer = styled.div`
 `
 const CreateHabitElement = styled.span`
-    
     div{
         color:${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#DBDBDB" : "#FFFFFF"};
         background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
     }
+`
+const HabitElement = styled.span`
+    width:30px;
+    height: 30px;
+    border-radius: 5px;
+    margin-right: 4px;
+    color: ${props => (props.habitDays.some((e) => e === codifyArray(props.weekday))) === false ? "#DBDBDB" : "#FFFFFF"};
+    background-color: ${props => (props.habitDays.some((e) => e === codifyArray(props.weekday))) === false ? "#FFFFFF" : "#CFCFCF"};
 `
