@@ -24,7 +24,7 @@ export const HabitBox = styled.div`
         color:#666666;
     }
     aside{
-        margin-left:74px;
+        margin-left:16vw;
         font-size:18px
     }
 `
