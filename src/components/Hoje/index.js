@@ -1,16 +1,17 @@
 import Header from "./../Header";
 import Footer from "./../Footer";
-import styled from "styled-components";
 
-import UserContext from "./../../contexts/UserContext"
-import { useEffect, useState } from "react";
+import axios from "axios";
 import { useContext } from "react";
+import { useEffect, useState } from "react";
 
 import PercentageContext from "./../../contexts/PercentageContext";
+import UserContext from "./../../contexts/UserContext"
 
 import validateWeekday from "./functions/validateWeekday";
 import formulateDate from "./functions/formulateDate";
-import axios from "axios";
+
+import { Main, TextsContainer, TextsBox, HabitsSection, Habit, HabitBox, IconBox } from "./styles"
 
 export default function Hoje() {
 
@@ -23,7 +24,8 @@ export default function Hoje() {
 
     const [habits, setHabits] = useState([])
     const [check, setCheck] = useState([]);
-    let [isInTheArray,setIsInTheArray] = useState(undefined);
+
+    let [isInTheArray, setIsInTheArray] = useState(undefined);
 
     const config = {
         headers: {
@@ -47,12 +49,20 @@ export default function Hoje() {
 
     return (
         <>
-            <Header></Header>
+            <Header/>
             <Main>
                 <TextsContainer>
                     <TextsBox>
-                        <h1>{validateWeekday(dayjs().weekday())}, {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}</h1>
-                        {percentage === 0 ? <h2>Nenhum hábito concluido ainda</h2> : <h2>{percentage}% dos hábitos concluídos</h2>}
+                        <h1>
+                            {validateWeekday(dayjs().weekday())}, 
+                            {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
+                        </h1>
+                        {
+                            percentage === 0 ? 
+                                <h2>Nenhum hábito concluido ainda</h2> 
+                                : 
+                                <h2>{percentage}% dos hábitos concluídos</h2>
+                        }
                     </TextsBox>
                 </TextsContainer>
                 {habits.map((habit) => {
@@ -61,11 +71,7 @@ export default function Hoje() {
                             <HabitsSection>
                                 <Habit>
                                     <HabitBox>
-                                        <h1 onClick={() => {
-                                            console.log("Check" , check.length);
-                                            console.log("Habits length", habits.length);
-                                            console.log("Percentage", percentage);
-                                        }}>{habit.name}</h1>
+                                        <h1>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
                                     </HabitBox>
@@ -77,7 +83,12 @@ export default function Hoje() {
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
-                                                {((habits.length > 0) && (check.length > 0)) ? setPercentage((habits.length/check.length)*100) : <></>}
+                                                { 
+                                                    ((habits.length > 0) && (check.length > 0)) ? 
+                                                        setPercentage((habits.length / check.length) * 100) 
+                                                        : 
+                                                        <></> 
+                                                }
                                             } else {
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                                 setCheck(
@@ -92,71 +103,8 @@ export default function Hoje() {
                     )
                 })}
             </Main>
-            <Footer></Footer>
+            <Footer/>
         </>
     );
 }
 
-const Main = styled.main`
-    height: 76vh;
-    background-color: #E5E5E5;
-    font-family: 'Lexend Deca', sans-serif;
-`
-const TextsContainer = styled.section`
-    display:flex;
-    justify-content: center;
-    padding: 30px 0px 30px 0px;
-    h1{
-        font-size:23px;
-        color:#126BA5;
-    }
-    h2{
-        font-size: 18px;
-        color: #bababa;
-    }
-`
-const TextsBox = styled.div`
-    width:90%;
-    h1{
-        margin-bottom:5px;
-    }
-`
-const HabitsSection = styled.section`
-    display:flex;
-    justify-content: center;
-`
-const Habit = styled.div`
-    width: 90%;
-    height:15vh;
-    background-color: #FFFFFF;
-    color: #666666;
-    border-radius: 5px;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom:10px;
-    h1{
-        font-size:20px;
-        
-    }
-    h3{
-        font-size:13px;
-    }
-`
-const HabitBox = styled.div`
-    margin-left:15px;
-    h1{
-        margin-bottom:13px;
-    }
-    h3{
-        margin-bottom:5px;
-    }
-`
-const IconBox = styled.div`
-    font-size:75px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin-right:13px;
-    color: ${props => props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7"}
-`

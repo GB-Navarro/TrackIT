@@ -1,10 +1,14 @@
 import axios from "axios";
-import styled from "styled-components";
 
 import setWeekdays from "../../functions/setWeekdays";
 import modifyArray from "../../functions/modifyArray";
 
-import { SectionContainer, Section, ColumnContainer, InputContainer, BoxContainer1, BoxContainer2, BoxContainer3, ButtonContainer } from "./styles";
+import {
+SectionContainer, Section, ColumnContainer, InputContainer,
+BoxContainer1, BoxContainer2, BoxContainer3, ButtonContainer,
+CreateHabitElement
+}
+    from "./styles";
 
 export default function CreateHabit(props) {
     return (
@@ -64,7 +68,7 @@ export default function CreateHabit(props) {
                             })
                             props.setAuxArray([]);
                             props.setHabit({
-                                name:"",
+                                name: "",
                                 days: []
                             })
                         }}> Salvar </button>
@@ -74,10 +78,3 @@ export default function CreateHabit(props) {
         </>
     )
 }
-
-const CreateHabitElement = styled.span`
-    div{
-        color:${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#DBDBDB" : "#FFFFFF"};
-        background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
-    }
-`

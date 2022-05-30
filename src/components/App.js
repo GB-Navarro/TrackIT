@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TelaInicial from "./../components/TelaInicial";
-import Cadastro from "./../components/Cadastro";
-import Habitos from "./../components/Habitos";
-import Historico from "./../components/Historico"
-import Hoje from "./../components/Hoje";
-
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Hoje from "./../components/Hoje";
+import Habitos from "./../components/Habitos";
+import Cadastro from "./../components/Cadastro";
+import Historico from "./../components/Historico"
+import TelaInicial from "./../components/TelaInicial";
+
 import UserContext from "./../contexts/UserContext";
 import ImageContext from "./../contexts/ImageContext";
 import PercentageContext from "./../contexts/PercentageContext";

@@ -62,3 +62,9 @@ export const BoxContainer2 = styled.div`
 export const BoxContainer3 = styled.div`
     display:flex;
 `
+export const CreateHabitElement = styled.span`
+div{
+    color:${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#DBDBDB" : "#FFFFFF"};
+    background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
+}
+`
