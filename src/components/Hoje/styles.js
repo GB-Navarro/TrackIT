@@ -61,5 +61,6 @@ export const IconBox = styled.div`
     justify-content: center;
     align-items: center;
     margin-right:13px;
-    color: ${props => props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7"}
+    color: ${props => props.done === true ? "#8FC549" : (props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7")}
 `
+

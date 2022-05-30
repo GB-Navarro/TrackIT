@@ -1,6 +1,8 @@
 import setWeekdays from "../../functions/setWeekdays";
 import deleteHabit from "../../functions/deleteHabit";
 
+import { useState } from "react";
+
 import {
     HabitsSectionContainer, HabitsSection, HabitBox, TextContainer1,
     TextContainer2, TextContainer3, HabitContainer, BoxContainer1,
@@ -9,6 +11,8 @@ import {
     from "./styles"
 
 export default function Habito(props) {
+    
+    let [enabled, setEnabled] = useState(true);
 
     return (
         <HabitsSectionContainer>
@@ -28,7 +32,7 @@ export default function Habito(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <HabitElement habitDays={props.habitDays} weekday={weekday}>{setWeekdays(weekday)}</HabitElement>
+                                                <HabitElement habitDays={props.habitDays} weekday={weekday}>{setWeekdays(weekday, enabled)}</HabitElement>
                                             </>
                                         )
                                     })}

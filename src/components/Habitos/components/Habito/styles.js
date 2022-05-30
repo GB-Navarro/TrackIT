@@ -57,10 +57,13 @@ export const BoxContainer3 = styled.div`
     display:flex;
 `
 export const HabitElement = styled.span`
-width:30px;
+button{
+    width:30px;
 height: 30px;
 border-radius: 5px;
 margin-right: 4px;
 color: ${props => (props.habitDays.some((e) => e === codifyArray(props.weekday))) === false ? "#DBDBDB" : "#FFFFFF"};
 background-color: ${props => (props.habitDays.some((e) => e === codifyArray(props.weekday))) === false ? "#FFFFFF" : "#CFCFCF"};
+}
+
 `

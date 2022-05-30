@@ -5,17 +5,17 @@ import { Oval } from 'react-loader-spinner'
 import setWeekdays from "../../functions/setWeekdays";
 import modifyArray from "../../functions/modifyArray";
 
-import 
-{
+import {
     SectionContainer, Section, ColumnContainer, InputContainer,
     BoxContainer1, BoxContainer2, BoxContainer3, ButtonContainer,
     CreateHabitElement, LoadingButton
 }
-from "./styles";
+    from "./styles";
 
 export default function CreateHabit(props) {
 
     const [loading, setLoading] = useState(false);
+    const [enabled, setEnabled] = useState(true);
 
     return (
         <>
@@ -39,7 +39,7 @@ export default function CreateHabit(props) {
                                         })
                                     }} disabled></input>
                             }
-                            
+
                         </InputContainer>
                         <BoxContainer1>
                             <BoxContainer2>
@@ -58,7 +58,8 @@ export default function CreateHabit(props) {
                                                         ...props.habit,
                                                         days: props.weekdaysArray
                                                     })
-                                                }}>{setWeekdays(weekday)}</CreateHabitElement>
+                                                    {loading === true ? setEnabled(false) : setEnabled(true)}
+                                                }}>{setWeekdays(weekday, enabled)}</CreateHabitElement>
                                             </>
                                         )
                                     })}
@@ -71,10 +72,9 @@ export default function CreateHabit(props) {
                             props.setCreateHabit(false);
                         }}> Cancelar </button>
                         {
-                            loading === false ?
+                            loading === false ? 
                                 <button onClick={() => {
                                     setLoading(true);
-                                    props.setCreateHabit(false);
                                     props.setHabit({
                                         ...props.habit,
                                         days: props.weekdaysArray
@@ -82,6 +82,7 @@ export default function CreateHabit(props) {
                                     const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", props.habit, props.config);
                                     promisse.then(() => {
                                         setLoading(false);
+                                        props.setCreateHabit(false);
                                         props.setHabitsArray([...props.habitsArray, props.habit]);
                                     })
                                     promisse.catch(() => {
@@ -93,8 +94,9 @@ export default function CreateHabit(props) {
                                         name: "",
                                         days: []
                                     })
+                                    
                                 }}> Salvar </button>
-                                :
+                            :
                                 <LoadingButton disabled>
                                     <Oval color="#FFFFFF" height={50} width={35} />
                                 </LoadingButton>

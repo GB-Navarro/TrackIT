@@ -22,12 +22,13 @@ export default function Hoje() {
     const { token } = useContext(UserContext);
     const { percentage, setPercentage } = useContext(PercentageContext);
 
-    const [habits, setHabits] = useState([])
+    const [habits, setHabits] = useState([]);
     const [check, setCheck] = useState([]);
-
-    //let [isInTheArray, setIsInTheArray] = useState(undefined);
+    const [doneArray, setDoneArray] = useState([]);
 
     let isInTheArray = undefined;
+    let checkedHabits = check.length;
+    let totalHabits = habits.length;
 
     const config = {
         headers: {
@@ -35,14 +36,22 @@ export default function Hoje() {
         }
     }
 
-    // habits.length = total de hábitos
-    // percentage = check.length (total hábitos concluídos) / habits.length
+    function insertDoneData(initialArray, finalArray, setFinalArray){
+        for(let i = 0; i < initialArray.length; i++){
+            console.log("Entrou no laço", i)
+            if(initialArray[i].done === true){
+                console.log("Achou a condição");
+                setFinalArray([...finalArray, initialArray[i].id])
+            }
+        }
+    }
 
     useEffect(() => {
         const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
 
         promisse.then((response) => {
-            setHabits(response.data)
+            setHabits(response.data);
+            insertDoneData(habits, doneArray, setDoneArray);
         })
         promisse.catch((error) => {
             console.log(error);
@@ -57,8 +66,7 @@ export default function Hoje() {
                     <TextsBox>
                         <h1>
                             {validateWeekday(dayjs().weekday())},
-                            <span> 
-                                </span>  
+                            <span> </span>  
                             {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
                         </h1>
                         {
@@ -75,31 +83,35 @@ export default function Hoje() {
                             <HabitsSection>
                                 <Habit>
                                     <HabitBox>
-                                        <h1>{habit.name}</h1>
+                                        <h1 onClick={() => {
+                                            console.log(doneArray);
+                                        }}>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
                                     </HabitBox>
-                                    <IconBox check={check} id={habit.id}>
+                                    <IconBox check={check} id={habit.id} done={habit.done}>
                                         <ion-icon name="checkbox" onClick={() => {
 
                                             isInTheArray = (check.some((e) => e === habit.id));
+                    
+                                            setPercentage((check.length / habits.length) * 100)
 
                                             if (isInTheArray === false) {
-                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
+                                                habit.done = true;
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
-                                                /*{ 
-                                                    ((habits.length > 0) && (check.length > 0)) ? 
-                                                        setPercentage((habits.length / check.length) * 100) 
-                                                        : 
-                                                        <></> 
-                                                }*/
+                                                checkedHabits = checkedHabits + 1;
+                                                setPercentage((checkedHabits/totalHabits) * 100)
+                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                             } else {
-                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
+                                                habit.done = false;
                                                 setCheck(
                                                     check.filter((e) => e !== habit.id)
                                                 )
+                                                checkedHabits = checkedHabits - 1;
+                                                setPercentage((checkedHabits/totalHabits) * 100)
+                                                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                             }
                                         }}></ion-icon>
                                     </IconBox>
