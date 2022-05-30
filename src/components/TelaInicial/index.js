@@ -44,7 +44,7 @@ export default function TelaInicial() {
             <Section>
                 <ColumnContainer>
 
-                    <img src="./../../assets/images/logo.jpeg" alt="Logo" />
+                    <img src="./assets/images/logo.png" alt="Logo" />
                     <h1>TrackIt</h1>
 
                     {

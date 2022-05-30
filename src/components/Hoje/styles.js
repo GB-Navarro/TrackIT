@@ -56,9 +56,13 @@ export const HabitBox = styled.div`
     }
 `
 
-export const SpaceComponent = styled.div`
+export const BottomSpaceComponent = styled.div`
     background-color: #e5e5e5;
     padding-bottom:100px;
+`
+export const TopSpaceComponent = styled.div`
+    background-color: #e5e5e5;
+    padding-bottom:80px;
 `
 
 export const IconBox = styled.div`

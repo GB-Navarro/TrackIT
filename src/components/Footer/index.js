@@ -26,7 +26,7 @@ export default function Footer() {
                                     trailColor: "#52B6FF",
                                     textSize: "18px"
                                 })}
-                            />;
+                            />
                         </Link>
                     </CircularProgressBarBox>
                     <Link to="/historico">
