@@ -31,6 +31,9 @@ export default function Hoje() {
         }
     }
 
+    // habits.length = total de hábitos
+    // percentage = check.length (total hábitos concluídos) / habits.length
+
     useEffect(() => {
         const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
 
@@ -42,8 +45,6 @@ export default function Hoje() {
         })
     }, []);
 
-
-    //checar o array e comparar com o id porque o isinthearray é um estado de resultado único, logo, ele generaliza as propriedades css
     return (
         <>
             <Header></Header>
@@ -61,7 +62,11 @@ export default function Hoje() {
                             <HabitsSection>
                                 <Habit>
                                     <HabitBox>
-                                        <h1>{habit.name}</h1>
+                                        <h1 onClick={() => {
+                                            console.log("Check" , check.length);
+                                            console.log("Habits length", habits.length);
+                                            console.log("Percentage", percentage);
+                                        }}>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
                                     </HabitBox>
@@ -69,14 +74,13 @@ export default function Hoje() {
                                         <ion-icon name="checkbox" onClick={() => {
                                             setIsInTheArray(check.some((e) => e === habit.id))
                                             if (isInTheArray === false) {
-                                                const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`;
-                                                const checkPromisse = axios.post(URL, {}, config);
+                                                const checkPromisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
+                                                {((habits.length > 0) && (check.length > 0)) ? setPercentage((habits.length/check.length)*100) : <></>}
                                             } else {
-                                                const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`;
-                                                const uncheckPromisse = axios.post(URL, {}, config);
+                                                const uncheckPromisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                                 setCheck(
                                                     check.filter((e) => e != habit.id)
                                                 )
@@ -88,7 +92,6 @@ export default function Hoje() {
                         </>
                     )
                 })}
-
             </Main>
             <Footer></Footer>
         </>

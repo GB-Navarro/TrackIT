@@ -31,10 +31,8 @@ export default function Habitos() {
 
     const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
-
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     useEffect(() => {
-        const promisse = axios.get(URL, config)
+        const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
 
         promisse.then((response) => {
             setHabitsArray(response.data);
@@ -92,8 +90,6 @@ function InitialMessage() {
 }
 function CreateHabit(props) {
 
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-
     return (
         <>
             <SectionContainer>
@@ -142,8 +138,8 @@ function CreateHabit(props) {
                                 ...props.habit,
                                 days: props.weekdaysArray
                             })
-                            const promisse = axios.post(URL, props.habit, props.config);
-                            promisse.then((response) => {
+                            const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", props.habit, props.config);
+                            promisse.then(() => {
                                 props.setHabitsArray([...props.habitsArray, props.habit]);
                             })
                             promisse.catch((error) => {
@@ -205,8 +201,7 @@ function Habito(props) {
 }
 
 function deleteHabit(id, config) {
-    URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
-    axios.delete(URL, config)
+    axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config)
 }
 
 function setWeekdays(weekday) {
