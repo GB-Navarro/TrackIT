@@ -25,7 +25,9 @@ export default function Hoje() {
     const [habits, setHabits] = useState([])
     const [check, setCheck] = useState([]);
 
-    let [isInTheArray, setIsInTheArray] = useState(undefined);
+    //let [isInTheArray, setIsInTheArray] = useState(undefined);
+
+    let isInTheArray = undefined;
 
     const config = {
         headers: {
@@ -55,7 +57,8 @@ export default function Hoje() {
                     <TextsBox>
                         <h1>
                             {validateWeekday(dayjs().weekday())},
-                            <span> </span>  
+                            <span> 
+                                </span>  
                             {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
                         </h1>
                         {
@@ -78,18 +81,20 @@ export default function Hoje() {
                                     </HabitBox>
                                     <IconBox check={check} id={habit.id}>
                                         <ion-icon name="checkbox" onClick={() => {
-                                            setIsInTheArray(check.some((e) => e === habit.id))
+
+                                            isInTheArray = (check.some((e) => e === habit.id));
+
                                             if (isInTheArray === false) {
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
-                                                { 
+                                                /*{ 
                                                     ((habits.length > 0) && (check.length > 0)) ? 
                                                         setPercentage((habits.length / check.length) * 100) 
                                                         : 
                                                         <></> 
-                                                }
+                                                }*/
                                             } else {
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                                 setCheck(
