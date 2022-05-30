@@ -114,7 +114,7 @@ function CreateHabit(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <span onClick={() => {
+                                                <CreateHabitElement auxArray={props.auxArray} weekday={weekday} onClick={() => {
                                                     if (props.auxArray.some((e) => e === weekday) === false) {
                                                         props.setAuxArray([...props.auxArray, weekday]);
                                                     } else {
@@ -125,7 +125,7 @@ function CreateHabit(props) {
                                                         ...props.habit,
                                                         days: props.weekdaysArray
                                                     })
-                                                }}>{setWeekdays(weekday, props.auxArray)}</span>
+                                                }}>{setWeekdays(weekday)}</CreateHabitElement>
                                             </>
                                         )
                                     })}
@@ -176,7 +176,7 @@ function Habito(props) {
                                     {props.weekdays.map((weekday) => {
                                         return (
                                             <>
-                                                <span>{setWeekdays(weekday, props.auxArray)}</span>
+                                                <span>{setWeekdays(weekday)}</span>
                                             </>
                                         )
                                     })}
@@ -202,21 +202,21 @@ function deleteHabit(id, config) {
     axios.delete(URL, config)
 }
 
-function setWeekdays(weekday, auxArray) {
+function setWeekdays(weekday) {
     if (weekday === 'Dom') {
-        return <Box auxArray={auxArray} weekday={weekday}>D</Box>
+        return <Box>D</Box>
     } else if (weekday === 'Seg') {
-        return <Box auxArray={auxArray} weekday={weekday}>S</Box>
+        return <Box>S</Box>
     } else if (weekday === 'Ter') {
-        return <Box auxArray={auxArray} weekday={weekday}>T</Box>
+        return <Box>T</Box>
     } else if (weekday === 'Qua') {
-        return <Box auxArray={auxArray} weekday={weekday}>Q</Box>
+        return <Box>Q</Box>
     } else if (weekday === 'Qui') {
-        return <Box auxArray={auxArray} weekday={weekday}>Q</Box>
+        return <Box>Q</Box>
     } else if (weekday === 'Sex') {
-        return <Box auxArray={auxArray} weekday={weekday}>S</Box>
+        return <Box>S</Box>
     } else if (weekday === 'Sab') {
-        return <Box auxArray={auxArray} weekday={weekday}>S</Box>
+        return <Box>S</Box>
     }
 }
 
@@ -324,8 +324,7 @@ const Box = styled.div`
     margin-right: 4px;
     font-family: 'Lexend Deca', sans-serif;
     font-size:20px;
-    color:${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#DBDBDB" : "#FFFFFF"};
-    background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
+
 `
 const ColumnContainer = styled.div`
     display:flex;
@@ -410,4 +409,11 @@ const TextContainer3 = styled.div`
     display:flex;
 `
 const HabitContainer = styled.div`
+`
+const CreateHabitElement = styled.span`
+    
+    div{
+        color:${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#DBDBDB" : "#FFFFFF"};
+        background-color: ${props => (props.auxArray.some((e) => e === props.weekday) === false) ? "#FFFFFF" : "#CFCFCF"};
+    }
 `
