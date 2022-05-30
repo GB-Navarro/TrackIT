@@ -58,7 +58,8 @@ export default function Habitos() {
                     <CreateHabit setCreateHabit={setCreateHabit} habit={habit} setHabit={setHabit}
                         token={token} config={config} weekdaysArray={weekdaysArray}
                         setWeekdaysArray={setWeekdaysArray} weekdays={weekdays}
-                        auxArray={createHabitAuxArray} setAuxArray={setCreateHabitAuxArray} />
+                        auxArray={createHabitAuxArray} setAuxArray={setCreateHabitAuxArray} 
+                        habitsArray={habitsArray} setHabitsArray={setHabitsArray}/>
                     :
                     <></>
                 }
@@ -69,7 +70,7 @@ export default function Habitos() {
                         return (
                             <>
                                 <Habito name={element.name} weekdays={weekdays} id={element.id}
-                                    config={config} habitDays={element.days} />
+                                    config={config} habitDays={element.days} habitsArray={habitsArray} setHabitsArray={setHabitsArray}/>
                             </>
                         )
                     })
@@ -142,6 +143,9 @@ function CreateHabit(props) {
                                 days: props.weekdaysArray
                             })
                             const promisse = axios.post(URL, props.habit, props.config);
+                            promisse.then((response) => {
+                                props.setHabitsArray([...props.habitsArray, props.habit]);
+                            })
                             promisse.catch((error) => {
                                 console.log(error);
                             })
@@ -185,6 +189,7 @@ function Habito(props) {
                         <ion-icon name="trash-outline" onClick={() => {
                             if (window.confirm("Voce realmente quer deletar esse hábito ?")) {
                                 deleteHabit(props.id, props.config);
+                                props.setHabitsArray(props.habitsArray.filter((e) => e.id != props.id))
                             }
                         }}></ion-icon>
                     </aside>
@@ -245,24 +250,6 @@ function codifyArray(element) {
         return 5;
     } else if (element === 'Sab') {
         return 6;
-    }
-}
-
-function decodifyArray(element) {
-    if (element === 0) {
-        return 'Dom';
-    } else if (element === 1) {
-        return 'Seg';
-    } else if (element === 2) {
-        return 'Ter';
-    } else if (element === 3) {
-        return 'Qua';
-    } else if (element === 4) {
-        return 'Qui';
-    } else if (element === 5) {
-        return 'Sex';
-    } else if (element === 6) {
-        return 'Sab';
     }
 }
 
