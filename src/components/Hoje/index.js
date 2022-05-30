@@ -11,7 +11,9 @@ import UserContext from "./../../contexts/UserContext"
 import validateWeekday from "./functions/validateWeekday";
 import formulateDate from "./functions/formulateDate";
 
-import { Main, TextsContainer, TextsBox, HabitsSection, Habit, HabitBox, IconBox, BottomSpaceComponent, TopSpaceComponent } from "./styles"
+import { Main, TextsContainer, TextsBox, HabitsSection, 
+    Habit, HabitBox, IconBox, BottomSpaceComponent, 
+    TopSpaceComponent, GreenText } from "./styles"
 
 export default function Hoje() {
 
@@ -26,6 +28,10 @@ export default function Hoje() {
     const [check, setCheck] = useState([]);
     const [checkedHabits, setCheckedHabits] = useState(0);
     const [totalHabits, setTotalHabits] = useState(0);
+    const [record, setRecord] = useState([{
+        currentSequence: 0,
+        highestSequence: 0
+    }])
 
     let isInTheArray = undefined;
 
@@ -87,9 +93,29 @@ export default function Hoje() {
                             <HabitsSection>
                                 <Habit>
                                     <HabitBox>
-                                        <h1>{habit.name}</h1>
-                                        <h3>Sequência atual: {habit.currentSequence}</h3>
-                                        <h3>Seu recorde: {habit.highestSequence}</h3>
+                                        {
+                                            check.some((e) => e === habit.id) === true ? 
+                                            (
+                                                habit.currentSequence === habit.highestSequence ?
+                                                <>
+                                                    <h1>{habit.name}</h1>
+                                                    <h3>Sequência atual: <GreenText>{habit.currentSequence}</GreenText></h3>
+                                                    <h3>Seu recorde: <GreenText>{habit.highestSequence}</GreenText></h3>
+                                                </> 
+                                                :
+                                                <>
+                                                    <h1>{habit.name}</h1>
+                                                    <h3>Sequência atual: <GreenText>{habit.currentSequence}</GreenText></h3>
+                                                    <h3>Seu recorde: {habit.highestSequence}</h3>
+                                                </> 
+                                            )
+                                            : 
+                                            <>
+                                                <h1>{habit.name}</h1>
+                                                <h3>Sequência atual: {habit.currentSequence}</h3>
+                                                <h3>Seu recorde: {habit.highestSequence}</h3>
+                                            </>
+                                        }
                                     </HabitBox>
                                     <IconBox check={check} id={habit.id} done={habit.done}>
                                         <ion-icon name="checkbox" onClick={() => {
@@ -103,6 +129,13 @@ export default function Hoje() {
                                                 )
                                                 setCheckedHabits(checkedHabits + 1);
                                                 setPercentage(Math.floor((checkedHabits/totalHabits)*100));
+                                                if(habit.highestSequence === habit.currentSequence){
+                                                    habit.currentSequence = habit.currentSequence + 1;
+                                                    habit.highestSequence = habit.highestSequence + 1;
+                                                }else{
+                                                    habit.currentSequence = habit.currentSequence + 1;
+                                                }
+                                                
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                             } else {
                                                 habit.done = false;
@@ -111,6 +144,7 @@ export default function Hoje() {
                                                 )
                                                 setCheckedHabits(checkedHabits - 1);
                                                 setPercentage(Math.floor((checkedHabits/totalHabits)*100));
+                                                habit.currentSequence = habit.currentSequence - 1;
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                             }
                                         }}></ion-icon>

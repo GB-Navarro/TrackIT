@@ -65,6 +65,10 @@ export const TopSpaceComponent = styled.div`
     padding-bottom:80px;
 `
 
+export const GreenText = styled.span`
+    color: #8FC549;
+`
+
 export const IconBox = styled.div`
     font-size:75px;
     display:flex;
@@ -72,7 +76,5 @@ export const IconBox = styled.div`
     align-items: center;
     margin-right:13px;
     color: ${props => props.done === true ? "#8FC549" : (props.check.length > 0 ? ((props.check.some((e) => e === props.id)) === true ? "#8FC549" : "#e7e7e7") : "#e7e7e7")}
-    `
+`
     
-
-
