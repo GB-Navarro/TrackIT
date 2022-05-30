@@ -24,11 +24,10 @@ export default function Hoje() {
 
     const [habits, setHabits] = useState([]);
     const [check, setCheck] = useState([]);
-    const [doneArray, setDoneArray] = useState([]);
+    const [checkedHabits, setCheckedHabits] = useState(0);
+    const [totalHabits, setTotalHabits] = useState(0);
 
     let isInTheArray = undefined;
-    let checkedHabits = check.length;
-    let totalHabits = habits.length;
 
     const config = {
         headers: {
@@ -36,14 +35,12 @@ export default function Hoje() {
         }
     }
 
-    function insertDoneData(initialArray, finalArray, setFinalArray){
-        for(let i = 0; i < initialArray.length; i++){
-            console.log("Entrou no laço", i)
-            if(initialArray[i].done === true){
-                console.log("Achou a condição");
-                setFinalArray([...finalArray, initialArray[i].id])
-            }
+    function getId(array){
+        let idArray = []
+        for(let i = 0; i < array.length; i++){
+            idArray.push(array[i].id)
         }
+        return idArray
     }
 
     useEffect(() => {
@@ -51,7 +48,10 @@ export default function Hoje() {
 
         promisse.then((response) => {
             setHabits(response.data);
-            insertDoneData(habits, doneArray, setDoneArray);
+            setCheck(getId(response.data.filter((e) => e.done === true)))
+            setCheckedHabits((response.data.filter((e) => e.done === true)).length);
+            setTotalHabits(response.data.length);
+            setPercentage(Math.floor((checkedHabits/totalHabits)*100));
         })
         promisse.catch((error) => {
             console.log(error);
@@ -71,7 +71,10 @@ export default function Hoje() {
                             {formulateDate(dayjs().date(), dayjs().month(), dayjs().year())}
                         </h1>
                         {
-                            percentage === 0 ? 
+                            setPercentage(Math.floor((checkedHabits/totalHabits)*100))
+                        }
+                        {
+                            (percentage === 0 || percentage === NaN) ? 
                                 <h2>Nenhum hábito concluido ainda</h2> 
                                 : 
                                 <h2>{percentage}% dos hábitos concluídos</h2>
@@ -84,9 +87,7 @@ export default function Hoje() {
                             <HabitsSection>
                                 <Habit>
                                     <HabitBox>
-                                        <h1 onClick={() => {
-                                            console.log(doneArray);
-                                        }}>{habit.name}</h1>
+                                        <h1>{habit.name}</h1>
                                         <h3>Sequência atual: {habit.currentSequence}</h3>
                                         <h3>Seu recorde: {habit.highestSequence}</h3>
                                     </HabitBox>
@@ -100,16 +101,16 @@ export default function Hoje() {
                                                 setCheck(
                                                     [...check, habit.id]
                                                 )
-                                                checkedHabits = checkedHabits + 1;
-                                                setPercentage(Math.floor((checkedHabits/totalHabits) * 100))
+                                                setCheckedHabits(checkedHabits + 1);
+                                                setPercentage(Math.floor((checkedHabits/totalHabits)*100));
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
                                             } else {
                                                 habit.done = false;
                                                 setCheck(
                                                     check.filter((e) => e !== habit.id)
                                                 )
-                                                checkedHabits = checkedHabits - 1;
-                                                setPercentage(Math.floor((checkedHabits/totalHabits) * 100))
+                                                setCheckedHabits(checkedHabits - 1);
+                                                setPercentage(Math.floor((checkedHabits/totalHabits)*100));
                                                 axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
                                             }
                                         }}></ion-icon>
